@@ -6,6 +6,7 @@ aws ec2 wait instance-running --instance-ids ${instance_list[@]}
 echo "Instance/Instances ${instance_list[@]} up and running...."
 aws elb create-load-balancer --load-balancer-name MP1LoadBalancer --listeners Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80 --security-groups $5 --subnets $6
 aws elb create-lb-cookie-stickiness-policy --load-balancer-name MP1LoadBalancer --policy-name AravindELBStickyPolicy
+aws elb set-load-balancer-policies-of-listener --load-balancer-name MP1LoadBalancer --load-balancer-port 80 --policy-name AravindELBStickyPolicy
 aws elb register-instances-with-load-balancer --load-balancer-name MP1LoadBalancer --instances ${instance_list[@]}
 aws elb configure-health-check --load-balancer-name MP1LoadBalancer --health-check Target=HTTP:80/index.html,Interval=30,UnhealthyThreshold=2,HealthyThreshold=2,Timeout=3
 aws autoscaling create-launch-configuration --launch-configuration-name ITMO-544-launch-config --image-id $1 --key-name $4 --security-groups $5 --instance-type $3 --user-data /home/controller/Documents/MP-Final-Environment-Setup/install-webserver.sh --iam-instance-profile $7
