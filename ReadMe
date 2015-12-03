@@ -1,0 +1,4 @@
+Execution Instruction
+---------------------
+
+Kindly execute the setup.php file once the launch.sh file completes execution and both the master and read-only DB instances are in available state.
